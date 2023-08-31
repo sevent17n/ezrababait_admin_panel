@@ -1,12 +1,18 @@
-import { IsEmail, IsString, MinLength } from "class-validator"
+import { IsString, IsNumber } from "class-validator"
 
-export class AuthDto {
-  @IsEmail()
-  email: string
-
-  @MinLength(6, {
-    message: "Password must contains at least 6 characters"
-  })
+export class TelegramLoginDto {
+  @IsNumber()
+  id: number
   @IsString()
-  password: string
+  first_name: string
+  @IsString()
+  last_name: string
+  @IsString()
+  username: string
+  @IsString()
+  hash: string
+  @IsNumber()
+  auth_date: number
+  @IsString()
+  photo_url: string
 }

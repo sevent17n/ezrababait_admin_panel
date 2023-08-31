@@ -1,50 +1,75 @@
-import { JwtService } from "@nestjs/jwt"
-import { InjectModel } from "nestjs-typegoose"
 import {
   BadRequestException,
   Injectable,
   UnauthorizedException
 } from "@nestjs/common"
+import { InjectModel } from "nestjs-typegoose"
 import { ModelType } from "@typegoose/typegoose/lib/types"
-import { AuthDto } from "./dto/auth.dto"
-import { UserModel } from "../user/user.model"
+import { UserModel } from "src/user/user.model"
+import { TelegramLoginDto } from "./dto/auth.dto"
+import { JwtService } from "@nestjs/jwt"
 import { RefreshTokenDto } from "./dto/refreshToken.dto"
-import { compare, genSalt, hash } from "bcryptjs"
+import * as crypto from "crypto"
+
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectModel(UserModel) private readonly UserModel: ModelType<UserModel>,
+    @InjectModel(UserModel)
+    private readonly User: ModelType<UserModel>,
     private readonly jwtService: JwtService
   ) {}
-
-  async login(dto: AuthDto) {
-    // const user = await this.validateUser(dto)
-    // const tokens = await this.issueTokenPair(String(user.id))
-    // return {
-    //   user: this.returnUserFields(user),
-    //   ...tokens
-    // }
+  verifyTelegramData(
+    receivedHash: string,
+    botToken: string,
+    dto: TelegramLoginDto
+  ): boolean {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { hash: _, ...filteredAuthData } = dto
+    const dataCheckArray = Object.entries(filteredAuthData).map(
+      ([key, value]) => `${key}=${value}`
+    )
+    dataCheckArray.sort()
+    const dataCheckString = dataCheckArray.join("\n")
+    const secretKey = crypto.createHash("sha256").update(botToken).digest()
+    const hmac = crypto
+      .createHmac("sha256", secretKey)
+      .update(dataCheckString)
+      .digest("hex")
+    return hmac === receivedHash
   }
-  async register(dto: AuthDto) {
-    const oldUser = await this.UserModel.findOne({ email: dto.email })
-    if (oldUser) {
-      throw new BadRequestException("This email is already taken")
+  async telegramLogin(dto: TelegramLoginDto) {
+    const { TOKEN } = process.env
+
+    const isDataValid = this.verifyTelegramData(dto.hash, TOKEN, dto)
+    if (Date.now() - dto.auth_date * 1000 > 86400 * 1000) {
+      throw new BadRequestException("Data is outdated")
     }
-    const salt = await genSalt()
-    const newUser = new this.UserModel({
-      email: dto.email,
-      password: await hash(dto.password, salt)
+    if (!isDataValid) {
+      throw new UnauthorizedException("Think you smart, huh?")
+    }
+    const user = await this.User.findOne({
+      id: dto.id
     })
-    await newUser.save()
-    const tokens = await this.issueTokenPair(String(newUser._id))
+    if (!user) {
+      const newUser = new this.User(dto)
+
+      await newUser.save()
+      const tokens = await this.issueTokenPair(String(newUser.id))
+
+      return {
+        user: this.returnUserFields(user),
+        ...tokens
+      }
+    }
+    const tokens = await this.issueTokenPair(String(user.id))
     return {
-      user: this.returnUserFields(newUser),
+      user: this.returnUserFields(user),
       ...tokens
     }
   }
 
   async issueTokenPair(userId: string) {
-    const data = { _id: userId }
+    const data = { id: userId }
     const refreshToken = await this.jwtService.signAsync(data, {
       expiresIn: "15d"
     })
@@ -56,9 +81,11 @@ export class AuthService {
   }
   returnUserFields(user: UserModel) {
     return {
-      _id: user._id,
+      id: user.id,
       first_name: user.first_name,
-      profileImageURL: user.profileImageURL,
+      last_name: user.last_name,
+      username: user.username,
+      photo_url: user.photo_url,
       isAdmin: user.isAdmin
     }
   }
@@ -70,7 +97,9 @@ export class AuthService {
     if (!result) {
       throw new UnauthorizedException("Invalid token or expired")
     }
-    const user = await this.UserModel.findById(result._id)
+
+    const user = await this.User.findOne({ id: result.id })
+
     const tokens = await this.issueTokenPair(String(user.id))
     return {
       user: this.returnUserFields(user),

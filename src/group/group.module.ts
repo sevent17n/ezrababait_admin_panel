@@ -1,10 +1,10 @@
 import { Module } from "@nestjs/common"
 import { TypegooseModule } from "nestjs-typegoose"
-import { UserModel } from "./user.model"
+import { UserModel } from "../user/user.model"
+import { GroupModel } from "./group.model"
 import { ConfigModule } from "@nestjs/config"
-import { UserService } from "./user.service"
-import { UserController } from "./user.controller"
-import { GroupModel } from "../group/group.model"
+import { GroupService } from "./group.service"
+import { GroupController } from "./group.controller"
 
 @Module({
   imports: [
@@ -24,7 +24,7 @@ import { GroupModel } from "../group/group.model"
     ]),
     ConfigModule
   ],
-  providers: [UserService],
-  controllers: [UserController]
+  providers: [GroupService],
+  controllers: [GroupController]
 })
-export class UserModule {}
+export class GroupModule {}
