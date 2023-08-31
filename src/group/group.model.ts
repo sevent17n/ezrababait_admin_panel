@@ -4,8 +4,10 @@ import { UserModel } from "../user/user.model"
 
 @modelOptions({ options: { allowMixed: Severity.ALLOW } })
 export class GroupModel extends TimeStamps {
-  @prop()
-  adminId: UserModel
-  @prop()
+  @prop({ unique: true, default: "" })
+  name: string
+  @prop({ default: {} })
+  admin: UserModel
+  @prop({ default: [] })
   members: Array<UserModel>
 }

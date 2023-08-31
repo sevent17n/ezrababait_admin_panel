@@ -86,7 +86,10 @@ export class AuthService {
       last_name: user.last_name,
       username: user.username,
       photo_url: user.photo_url,
-      isAdmin: user.isAdmin
+      isAdmin: user.isAdmin,
+      groupId: user.groupId,
+      chats: user.chats,
+      posts: user.posts
     }
   }
   async getNewTokens({ refreshToken }: RefreshTokenDto) {

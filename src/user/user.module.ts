@@ -4,7 +4,6 @@ import { UserModel } from "./user.model"
 import { ConfigModule } from "@nestjs/config"
 import { UserService } from "./user.service"
 import { UserController } from "./user.controller"
-import { GroupModel } from "../group/group.model"
 
 @Module({
   imports: [
@@ -13,12 +12,6 @@ import { GroupModel } from "../group/group.model"
         typegooseClass: UserModel,
         schemaOptions: {
           collection: "User"
-        }
-      },
-      {
-        typegooseClass: GroupModel,
-        schemaOptions: {
-          collection: "Group"
         }
       }
     ]),
