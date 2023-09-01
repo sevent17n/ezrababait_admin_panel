@@ -1,8 +1,10 @@
-import { modelOptions, prop, Severity } from "@typegoose/typegoose"
+import { modelOptions, mongoose, prop, Severity } from "@typegoose/typegoose"
 import { TimeStamps } from "@typegoose/typegoose/lib/defaultClasses"
 
 @modelOptions({ options: { allowMixed: Severity.ALLOW } })
 export class PostModel extends TimeStamps {
+  @prop()
+  id: mongoose.Types.ObjectId
   @prop()
   image_url: string
   @prop()
