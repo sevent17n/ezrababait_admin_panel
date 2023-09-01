@@ -4,6 +4,7 @@ import { ConfigModule } from "@nestjs/config"
 import { ChatModel } from "./chat.model"
 import { ChatService } from "./chat.service"
 import { ChatController } from "./chat.controller"
+import { UserModel } from "../user/user.model"
 
 @Module({
   imports: [
@@ -12,6 +13,12 @@ import { ChatController } from "./chat.controller"
         typegooseClass: ChatModel,
         schemaOptions: {
           collection: "Chat"
+        }
+      },
+      {
+        typegooseClass: UserModel,
+        schemaOptions: {
+          collection: "User"
         }
       }
     ]),

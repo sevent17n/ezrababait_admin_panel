@@ -7,6 +7,7 @@ import { UserModule } from "./user/user.module"
 import { GroupModule } from "./group/group.module"
 import { FileModule } from "./file/file.module"
 import { PostModule } from "./post/post.module"
+import { ChatModule } from "./chat/chat.module"
 
 @Module({
   imports: [
@@ -20,7 +21,8 @@ import { PostModule } from "./post/post.module"
     UserModule,
     GroupModule,
     FileModule,
-    PostModule
+    PostModule,
+    ChatModule
   ],
   providers: [],
   controllers: []

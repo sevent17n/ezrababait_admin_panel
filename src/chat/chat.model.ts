@@ -9,6 +9,8 @@ export class MessageModel {
   date: Date
   @prop()
   userId: number
+  @prop()
+  chatId: number
 }
 export class ChatModel {
   @prop()
