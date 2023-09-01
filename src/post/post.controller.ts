@@ -1,7 +1,55 @@
-import { Controller } from "@nestjs/common"
+import {
+  Body,
+  Controller,
+  Delete,
+  HttpCode,
+  Patch,
+  Post,
+  Query,
+  UsePipes,
+  ValidationPipe
+} from "@nestjs/common"
 import { PostService } from "./post.service"
+import { Auth } from "../auth/decorators/auth.decorator"
+import { PostDto } from "./dto/post.dto"
 
-@Controller("groups")
+@Controller("posts")
 export class PostController {
   constructor(private readonly PostService: PostService) {}
+
+  @Auth()
+  @UsePipes(new ValidationPipe())
+  @HttpCode(200)
+  @Post("create_post")
+  async createPost(@Body() dto: PostDto) {
+    return await this.PostService.createPost(dto)
+  }
+  @Auth()
+  @UsePipes(new ValidationPipe())
+  @HttpCode(200)
+  @Patch("update_post")
+  async updatePost(@Body() dto: PostDto, @Query("postId") postId: number) {
+    return await this.PostService.updatePost(dto, postId)
+  }
+  @Auth()
+  @UsePipes(new ValidationPipe())
+  @HttpCode(200)
+  @Delete("update_post")
+  async deletePost(@Query("postId") postId: number) {
+    return await this.PostService.deletePost(postId)
+  }
+  @Auth("admin")
+  @UsePipes(new ValidationPipe())
+  @HttpCode(200)
+  @Delete("update_post")
+  async applyPost(@Query("postId") postId: number) {
+    return await this.PostService.applyPost(postId)
+  }
+  @Auth("admin")
+  @UsePipes(new ValidationPipe())
+  @HttpCode(200)
+  @Delete("update_post")
+  async rejectPost(@Query("postId") postId: number) {
+    return await this.PostService.rejectPost(postId)
+  }
 }

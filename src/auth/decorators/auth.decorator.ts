@@ -9,6 +9,6 @@ export const Auth = (role: TypeRole = "housekeeper") => {
   } else if (role === "super_admin") {
     return applyDecorators(UseGuards(JwtAuthGuard, OnlySuperAdminGuard))
   } else {
-    applyDecorators(UseGuards(JwtAuthGuard))
+    return applyDecorators(UseGuards(JwtAuthGuard))
   }
 }

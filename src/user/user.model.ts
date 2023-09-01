@@ -1,6 +1,8 @@
 import { TimeStamps } from "@typegoose/typegoose/lib/defaultClasses"
 import { modelOptions, prop, Severity } from "@typegoose/typegoose"
 import { TypeRole } from "../auth/auth.interface"
+import { PostModel } from "../post/post.model"
+import { ChatModel } from "../chat/chat.model"
 
 @modelOptions({ options: { allowMixed: Severity.ALLOW } })
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
@@ -18,37 +20,9 @@ export class UserModel extends TimeStamps {
   @prop({ default: "housekeeper" })
   isAdmin: TypeRole
   @prop()
-  posts: Post[]
+  posts: PostModel[]
   @prop()
-  chats: Chat[]
+  chats: ChatModel[]
   @prop()
   groupId: number
-}
-export class Post {
-  @prop()
-  age: number
-  @prop()
-  name: string
-  @prop()
-  bio: string
-  @prop()
-  schedule: string
-  @prop()
-  scope: string
-  @prop()
-  area: string
-  @prop()
-  distance: string
-  @prop()
-  experience: string
-}
-export class Message {
-  @prop()
-  content: string
-  @prop()
-  date: Date
-}
-export class Chat {
-  @prop()
-  messages: Message[]
 }
