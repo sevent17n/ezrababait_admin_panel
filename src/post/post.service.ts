@@ -40,6 +40,7 @@ export class PostService {
       { id: postId },
       { status: "accepted" }
     ).exec()
+
     if (!post) {
       throw new NotFoundException(`Post width id: ${postId} notFound`)
     }
@@ -55,5 +56,13 @@ export class PostService {
       throw new NotFoundException(`Post width id: ${postId} notFound`)
     }
     return post
+  }
+
+  async getPosts(query: "rejected" | "accepted" | undefined) {
+    if (query === undefined) {
+      return await this.PostModel.find().exec()
+    } else {
+      return await this.PostModel.find({ status: query }).exec()
+    }
   }
 }

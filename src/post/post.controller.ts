@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   HttpCode,
   Patch,
   Post,
@@ -34,22 +35,29 @@ export class PostController {
   @Auth()
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
-  @Delete("update_post")
+  @Delete("delete_post")
   async deletePost(@Query("postId") postId: number) {
     return await this.PostService.deletePost(postId)
   }
   @Auth("admin")
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
-  @Delete("update_post")
+  @Patch("apply_post")
   async applyPost(@Query("postId") postId: number) {
     return await this.PostService.applyPost(postId)
   }
   @Auth("admin")
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
-  @Delete("update_post")
+  @Patch("reject_post")
   async rejectPost(@Query("postId") postId: number) {
     return await this.PostService.rejectPost(postId)
+  }
+  @Auth("admin")
+  @UsePipes(new ValidationPipe())
+  @HttpCode(200)
+  @Get("posts")
+  async getPosts(@Query("query") query: "rejected" | "accepted" | undefined) {
+    return await this.PostService.getPosts(query)
   }
 }

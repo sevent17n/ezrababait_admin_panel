@@ -6,12 +6,14 @@ import {
   HttpCode,
   Post,
   Query,
+  Req,
   UsePipes,
   ValidationPipe
 } from "@nestjs/common"
 import { UserService } from "./user.service"
 import { Auth } from "../auth/decorators/auth.decorator"
 import { TypeRole } from "../auth/auth.interface"
+import { Request } from "express"
 
 @Controller("users")
 export class UserController {
@@ -45,7 +47,21 @@ export class UserController {
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
   @Post()
-  async changeRole(@Body("role") role: TypeRole, @Body("id") id: number) {
-    return this.UserService.changeRole(role, id)
+  async changeRole(
+    @Body("role") role: TypeRole,
+    @Body("id") id: number,
+    @Req() request: Request
+  ) {
+    return this.UserService.changeRole(role, id, request)
+  }
+  @Auth("admin")
+  @UsePipes(new ValidationPipe())
+  @HttpCode(200)
+  @Get("pending_users")
+  async getPendingUsers(
+    @Query("page") page: number,
+    @Query("perPage") perPage: number
+  ) {
+    return this.UserService.getPendingUsers(page, perPage)
   }
 }

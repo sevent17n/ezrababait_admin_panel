@@ -1,4 +1,4 @@
-import { prop } from "@typegoose/typegoose"
+import { modelOptions, prop, Severity } from "@typegoose/typegoose"
 import { UserModel } from "../user/user.model"
 
 export interface ContentType {}
@@ -12,6 +12,7 @@ export class MessageModel {
   @prop()
   chatId: number
 }
+@modelOptions({ options: { allowMixed: Severity.ALLOW } })
 export class ChatModel {
   @prop()
   messages: MessageModel[]

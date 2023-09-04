@@ -17,7 +17,7 @@ export class UserModel extends TimeStamps {
   photo_url: string
   @prop({ default: "" })
   username: string
-  @prop({ default: "housekeeper" })
+  @prop({ default: "pending" })
   isAdmin: TypeRole
   @prop()
   posts: PostModel[]

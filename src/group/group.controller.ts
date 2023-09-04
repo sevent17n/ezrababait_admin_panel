@@ -42,7 +42,7 @@ export class GroupController {
   @Auth("admin")
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
-  @Get("create_group")
+  @Post("create_group")
   async createGroup(@Query("name") name: string) {
     return this.GroupService.createGroup(name)
   }

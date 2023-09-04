@@ -1,1 +1,1 @@
-export type TypeRole = "admin" | "housekeeper" | "super_admin"
+export type TypeRole = "admin" | "housekeeper" | "super_admin" | "pending"
