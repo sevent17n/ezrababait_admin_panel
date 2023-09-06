@@ -8,6 +8,7 @@ import { GroupModule } from "./group/group.module"
 import { FileModule } from "./file/file.module"
 import { PostModule } from "./post/post.module"
 import { ChatModule } from "./chat/chat.module"
+import { BotModule } from "./bot/bot.module"
 
 @Module({
   imports: [
@@ -22,7 +23,8 @@ import { ChatModule } from "./chat/chat.module"
     GroupModule,
     FileModule,
     PostModule,
-    ChatModule
+    ChatModule,
+    BotModule
   ],
   providers: [],
   controllers: []

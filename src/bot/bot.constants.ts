@@ -1,0 +1,4 @@
+export const REGISTRATION_SCENE = "REGISTRATION_SCENE"
+export const EMAIL_SCENE = "EMAIL_SCENE"
+export const PHONE_SCENE = "PHONE_SCENE"
+export const NAME_SCENE = "NAME_SCENE"

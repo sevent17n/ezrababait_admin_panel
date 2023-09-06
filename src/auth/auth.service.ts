@@ -37,10 +37,17 @@ export class AuthService {
       .digest("hex")
     return hmac === receivedHash
   }
+  async loginThroughBot(id: number) {
+    const oldUser = await this.User.findOne({ id })
+    if (!oldUser) {
+      const newUser = new this.User({ id })
+      await newUser.save()
+    }
+  }
   async telegramLogin(dto: TelegramLoginDto) {
-    const { TOKEN } = process.env
+    const { BOT_TOKEN } = process.env
 
-    const isDataValid = this.verifyTelegramData(dto.hash, TOKEN, dto)
+    const isDataValid = this.verifyTelegramData(dto.hash, BOT_TOKEN, dto)
     if (Date.now() - dto.auth_date * 1000 > 86400 * 1000) {
       throw new BadRequestException("Data is outdated")
     }
