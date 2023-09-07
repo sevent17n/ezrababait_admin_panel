@@ -4,8 +4,13 @@ import * as LocalSession from "telegraf-session-local"
 import { BotUpdate } from "./bot.update"
 import {
   EmailScene,
-  NameScene,
+  FirstNameScene,
+  LastNameScene,
+  SexScene,
+  AddressScene,
   PhoneScene,
+  AgeScene,
+  PhotoScene,
   RegistrationScene
 } from "./scenes/registration.scene"
 import { TypegooseModule } from "nestjs-typegoose"
@@ -14,6 +19,7 @@ import { ConfigModule, ConfigService } from "@nestjs/config"
 import { JwtModule } from "@nestjs/jwt"
 import { getJWTConfig } from "../config/jwt.config"
 import { AuthService } from "../auth/auth.service"
+import { BotQueueModel } from "./bot_queue.model"
 
 const sessions = new LocalSession({ database: "session_db.json" })
 
@@ -29,6 +35,12 @@ const sessions = new LocalSession({ database: "session_db.json" })
         schemaOptions: {
           collection: "User"
         }
+      },
+      {
+        typegooseClass: BotQueueModel,
+        schemaOptions: {
+          collection: "BotQueue"
+        }
       }
     ]),
     ConfigModule,
@@ -41,8 +53,13 @@ const sessions = new LocalSession({ database: "session_db.json" })
   providers: [
     BotUpdate,
     RegistrationScene,
-    NameScene,
+    FirstNameScene,
+    LastNameScene,
+    SexScene,
+    AddressScene,
     EmailScene,
+    AgeScene,
+    PhotoScene,
     PhoneScene,
     AuthService
   ],

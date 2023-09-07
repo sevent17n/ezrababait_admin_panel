@@ -5,9 +5,18 @@
       "data": {
         "__scenes": {},
         "user": {
-          "name": "Gfdsususj",
-          "email": "Susususu",
-          "phone": "Zizjsjjs",
+          "first_name": "John",
+          "username": "k8s_ops",
+          "last_name": "Doe",
+          "email": "nikitashadowrazev@gmail.com",
+          "sex": "male",
+          "age": 27,
+          "image_url": "https://api.telegram.org/file/bot6305243242:AAHO6JxSBeqBkrHDtz5UHsRq7hBl2W4hMQk/photos/file_6.jpg",
+          "address": {
+            "lat": 59.959302,
+            "lng": 30.423019
+          },
+          "phone": "+7 911 744 42 80",
           "id": 2129651431
         }
       }
@@ -25,6 +34,12 @@
     },
     {
       "id": "-1001789635768:6305243242",
+      "data": {
+        "__scenes": {}
+      }
+    },
+    {
+      "id": "-1001752755065:2129651431",
       "data": {
         "__scenes": {}
       }

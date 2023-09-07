@@ -9,10 +9,19 @@ export interface Context extends BaseContext {
 interface SessionData extends Scenes.SceneSession<MySceneSession> {
   messageId: number
   user: {
+    username?: string
+    age?: number
+    image_url?: string
     id?: number
-    name?: string
+    first_name?: string
+    last_name?: string
     email?: string
     phone?: string
+    sex?: "male" | "female"
+    address?: {
+      lat: number
+      lng: number
+    }
   }
   message: {
     text: string
