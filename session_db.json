@@ -3,21 +3,17 @@
     {
       "id": "2129651431:2129651431",
       "data": {
-        "__scenes": {},
+        "__scenes": {
+          "current": "PHOTO_SCENE",
+          "state": {}
+        },
         "user": {
-          "first_name": "John",
+          "first_name": "Name",
           "username": "k8s_ops",
-          "last_name": "Doe",
-          "email": "nikitashadowrazev@gmail.com",
+          "last_name": "Name",
+          "email": "name@name.name",
           "sex": "male",
-          "age": 27,
-          "image_url": "https://api.telegram.org/file/bot6305243242:AAHO6JxSBeqBkrHDtz5UHsRq7hBl2W4hMQk/photos/file_6.jpg",
-          "address": {
-            "lat": 59.959302,
-            "lng": 30.423019
-          },
-          "phone": "+7 911 744 42 80",
-          "id": 2129651431
+          "age": 17
         }
       }
     },
@@ -42,6 +38,16 @@
       "id": "-1001752755065:2129651431",
       "data": {
         "__scenes": {}
+      }
+    },
+    {
+      "id": "894780890:894780890",
+      "data": {
+        "__scenes": {
+          "current": "FIRST_NAME_SCENE",
+          "state": {}
+        },
+        "user": {}
       }
     }
   ]

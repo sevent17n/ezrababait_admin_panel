@@ -18,9 +18,8 @@ import axios from "axios"
 import { AuthService } from "../../auth/auth.service"
 import { parsePhoneNumberFromString } from "libphonenumber-js"
 import { InjectModel } from "nestjs-typegoose"
-import { BotQueueModel } from "../bot_queue.model"
+import { BotPostsModel } from "../bot_posts.model"
 import { ModelType } from "@typegoose/typegoose/lib/types"
-import { InputMediaPhoto } from "telegraf/types"
 
 @Scene(REGISTRATION_SCENE)
 export class RegistrationScene {
@@ -222,8 +221,8 @@ export class AddressScene {
 export class PhoneScene {
   constructor(
     private readonly AuthService: AuthService,
-    @InjectModel(BotQueueModel)
-    private readonly BotQueueModel: ModelType<BotQueueModel>
+    @InjectModel(BotPostsModel)
+    private readonly BotPostsModel: ModelType<BotPostsModel>
   ) {}
   @SceneEnter()
   async enter(@Ctx() context: Context) {
@@ -277,80 +276,44 @@ export class PhoneScene {
         phone
       } = context.session.user
       try {
-        let queue = await this.BotQueueModel.findOne()
-        if (!queue) {
-          const newQueue = new this.BotQueueModel()
-          await newQueue.save()
-          queue = newQueue
-        }
-        function PostButton() {
-          const buttons = queue.posts.map((post) => ({
-            text: `${post.first_name} ${post.last_name}`,
-            url: `https://t.me/${post.username}`
-          }))
-
-          const rows = []
-          for (let i = 0; i < buttons.length; i += 3) {
-            const row = buttons.slice(i, i + 3)
-            rows.push(row)
-          }
-
-          const inline_keyboard = rows.map((row) => row.map((button) => button))
-          return { inline_keyboard }
-        }
+        // function PostButton() {
+        //   const buttons = queue.map((post) => ({
+        //     text: `${post.first_name} ${post.last_name}`,
+        //     url: `https://t.me/${post.username}`
+        //   }))
+        //
+        //   const rows = []
+        //   for (let i = 0; i < buttons.length; i += 3) {
+        //     const row = buttons.slice(i, i + 3)
+        //     rows.push(row)
+        //   }
+        //
+        //   const inline_keyboard = rows.map((row) => row.map((button) => button))
+        //   return { inline_keyboard }
+        // }
         const { data } = await axios.post(
           `https://maps.googleapis.com/maps/api/geocode/json?latlng=${address.lat},${address.lng}&key=${process.env.GOOGLE_GECOCODING_TOKEN}`
         )
         const formatted_address = data.results[0].formatted_address
 
-        const postPush = () => {
-          queue.posts.push({
-            image_url,
-            first_name,
-            last_name,
-            profile_url: `https://t.me/${username}`,
-            age,
-            email,
-            phone,
-            sex,
-            address: formatted_address,
-            username
-          })
+        const post = await this.BotPostsModel.create({
+          image_url,
+          first_name,
+          last_name,
+          profile_url: `https://t.me/${username}`,
+          age,
+          email,
+          phone,
+          sex,
+          address: formatted_address,
+          coordinates: {
+            lat: address.lat,
+            lng: address.lng
+          },
+          username
+        })
 
-          return queue.save()
-        }
-
-        if (queue.posts.length >= 2) {
-          postPush()
-          // await context.telegram.sendPhoto(
-          //   -1001752755065,
-          //   { url: image_url },
-          //   {
-          //     caption: `Name: ${first_name}\nLast Name: ${last_name}\nEmail: ${email}\nPhone: ${phone} \nlocation: lat: ${address.lat.toString()} lng: ${address.lng.toString()}\n gender: ${sex} \n age: ${age}`,
-          //     reply_markup: PostButton()
-          //   }
-          // )
-          const captions = queue.posts.map((post) => {
-            return `Name: ${post.first_name}\nLast Name: ${post.last_name}\nEmail: ${post.email}\nPhone: ${phone} \naddress: ${post.address}\n gender: ${post.sex} \n age: ${post.age}`
-          })
-
-          const caption = captions.join("\n\n")
-          const imageUrls = queue.posts.map((post) => post.image_url)
-
-          const media: InputMediaPhoto[] = imageUrls.map((imageUrl) => ({
-            type: "photo",
-            media: { url: imageUrl },
-            caption: caption
-          }))
-
-          await context.telegram.sendMediaGroup(-1001752755065, media)
-          await context.telegram.sendMessage(-1001752755065, caption, {
-            reply_markup: PostButton()
-          })
-          queue.deleteOne()
-        } else {
-          postPush()
-        }
+        await post.save()
 
         await axios.post(
           "https://api.telegram.org/bot6305243242:AAHO6JxSBeqBkrHDtz5UHsRq7hBl2W4hMQk/createForumTopic",

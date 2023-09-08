@@ -4,7 +4,15 @@ export const registrationButton = () =>
   Markup.inlineKeyboard([
     Markup.button.callback("Register as housekeeper", "register_housekeeper")
   ])
-
+export const menuButton = () => {
+  const { WEB_APP_URL } = process.env
+  return Markup.inlineKeyboard([
+    [
+      { text: "Register as housekeeper", callback_data: "register_housekeeper" }
+    ],
+    [{ text: "Check requests ", web_app: { url: WEB_APP_URL } }]
+  ])
+}
 export const ConfirmRegistrationButton = () => {
   const buttons = [
     [

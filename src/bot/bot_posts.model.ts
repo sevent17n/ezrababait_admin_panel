@@ -1,6 +1,6 @@
 import { prop } from "@typegoose/typegoose"
 
-class Post {
+export class BotPostsModel {
   @prop()
   age: number
   @prop()
@@ -18,11 +18,7 @@ class Post {
   @prop()
   address: string
   @prop()
-  profile_url: string
-  @prop()
   username: string
-}
-export class BotQueueModel {
-  @prop({ maxlength: 3, default: [] })
-  posts: Array<Post>
+  @prop()
+  coordinates: { lat: number; lng: number }
 }

@@ -19,7 +19,9 @@ import { ConfigModule, ConfigService } from "@nestjs/config"
 import { JwtModule } from "@nestjs/jwt"
 import { getJWTConfig } from "../config/jwt.config"
 import { AuthService } from "../auth/auth.service"
-import { BotQueueModel } from "./bot_queue.model"
+import { BotPostsModel } from "./bot_posts.model"
+import { BotService } from "./bot.service"
+import { BotController } from "./bot.controller"
 
 const sessions = new LocalSession({ database: "session_db.json" })
 
@@ -37,9 +39,9 @@ const sessions = new LocalSession({ database: "session_db.json" })
         }
       },
       {
-        typegooseClass: BotQueueModel,
+        typegooseClass: BotPostsModel,
         schemaOptions: {
-          collection: "BotQueue"
+          collection: "BotPost"
         }
       }
     ]),
@@ -61,8 +63,9 @@ const sessions = new LocalSession({ database: "session_db.json" })
     AgeScene,
     PhotoScene,
     PhoneScene,
-    AuthService
+    AuthService,
+    BotService
   ],
-  controllers: []
+  controllers: [BotController]
 })
 export class BotModule {}
