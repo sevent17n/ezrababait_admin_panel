@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  NotFoundException,
   UnauthorizedException
 } from "@nestjs/common"
 import { InjectModel } from "nestjs-typegoose"
@@ -42,6 +43,31 @@ export class AuthService {
     if (!oldUser) {
       const newUser = new this.User({ id })
       await newUser.save()
+    }
+  }
+  async verifyLogin(dataCheckString: string, hash: string) {
+    const { BOT_TOKEN } = process.env
+    const secretKey = crypto.createHash("sha256").update(BOT_TOKEN).digest()
+
+    const hmac = crypto
+      .createHmac("sha256", secretKey)
+      .update(dataCheckString)
+      .digest("hex")
+    if (hmac === hash) {
+      const parts = dataCheckString.split("/")
+      const userIdPart = parts.find((part) => part.startsWith("userid="))
+      const userId = userIdPart ? userIdPart.split("=")[1] : null
+      const user = await this.User.findOne({ id: userId })
+      if (!user) {
+        throw new NotFoundException("User not found")
+      }
+      const tokens = await this.issueTokenPair(String(user.id))
+      return {
+        user: this.returnUserFields(user),
+        ...tokens
+      }
+    } else {
+      throw new UnauthorizedException("Auth error")
     }
   }
   async telegramLogin(dto: TelegramLoginDto) {

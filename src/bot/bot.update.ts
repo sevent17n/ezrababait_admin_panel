@@ -1,5 +1,5 @@
 import { Ctx, InjectBot, On, Start, Update } from "nestjs-telegraf"
-import { Telegraf } from "telegraf"
+import { Markup, Telegraf } from "telegraf"
 import { menuButton } from "./bot.buttons"
 
 import { REGISTRATION_SCENE } from "./bot.constants"
@@ -11,7 +11,10 @@ export class BotUpdate {
 
   @Start()
   async startCommand(@Ctx() ctx: Context) {
-    await ctx.reply("hello", menuButton())
+    const userid = ctx.message.from.id.toString()
+    const first_name = ctx.message.from.first_name
+
+    await ctx.reply("hello", menuButton(userid, first_name))
   }
   @On("callback_query")
   async register(@Ctx() ctx: Context) {
@@ -28,9 +31,11 @@ export class BotUpdate {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const data = ctx.message.text
-
-    if (data === "/check_requests") {
-      await ctx.reply("welcome to menu", menuButton())
-    }
+    const userid = ctx.message.from.id.toString()
+    const first_name = ctx.message.from.first_name
+    console.log(userid, first_name)
+    // if (data === "/check_requests") {
+    //   await ctx.reply("welcome to menu", menuButton(userid, first_name))
+    // }
   }
 }

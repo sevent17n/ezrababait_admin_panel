@@ -3,6 +3,7 @@ import {
   Controller,
   HttpCode,
   Post,
+  Query,
   UsePipes,
   ValidationPipe
 } from "@nestjs/common"
@@ -26,5 +27,14 @@ export class AuthController {
   @Post("login/access-token")
   async getNewTokens(@Body() dto: RefreshTokenDto) {
     return this.AuthService.getNewTokens(dto)
+  }
+  @UsePipes(new ValidationPipe())
+  @HttpCode(200)
+  @Post("verify")
+  async verifyLogin(
+    @Query("checkString") checkString: string,
+    @Query("hash") hash: string
+  ) {
+    return this.AuthService.verifyLogin(checkString, hash)
   }
 }
