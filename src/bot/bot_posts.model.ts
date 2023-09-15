@@ -1,6 +1,21 @@
 import { prop } from "@typegoose/typegoose"
 
+export interface BotPostsModel {
+  id: number
+  age: number
+  image_url: string
+  first_name: string
+  last_name: string
+  email: string
+  phone: string
+  sex: "male" | "female"
+  address: string
+  username: string
+  coordinates: { lat: number; lng: number }
+}
 export class BotPostsModel {
+  @prop()
+  id: number
   @prop()
   age: number
   @prop()

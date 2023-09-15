@@ -3,51 +3,13 @@
     {
       "id": "2129651431:2129651431",
       "data": {
-        "__scenes": {
-          "current": "PHOTO_SCENE",
-          "state": {}
-        },
-        "user": {
-          "first_name": "Name",
-          "username": "k8s_ops",
-          "last_name": "Name",
-          "email": "name@name.name",
-          "sex": "male",
-          "age": 17
-        }
+        "__scenes": {}
       }
     },
     {
       "id": "-1001789635768:2129651431",
       "data": {
-        "__scenes": {},
-        "user": {
-          "name": "Xhxjxn",
-          "email": "Nndjdjd",
-          "phone": "Hxhdndn"
-        }
-      }
-    },
-    {
-      "id": "-1001789635768:6305243242",
-      "data": {
         "__scenes": {}
-      }
-    },
-    {
-      "id": "-1001752755065:2129651431",
-      "data": {
-        "__scenes": {}
-      }
-    },
-    {
-      "id": "894780890:894780890",
-      "data": {
-        "__scenes": {
-          "current": "FIRST_NAME_SCENE",
-          "state": {}
-        },
-        "user": {}
       }
     }
   ]

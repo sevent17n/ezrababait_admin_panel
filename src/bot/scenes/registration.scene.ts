@@ -45,6 +45,7 @@ export class FirstNameScene {
       // @ts-ignore
       const name = context.message.text
       const username = context.message.from.username
+      const id = context.message.from.id
 
       if (!username) {
         await context.reply(
@@ -61,6 +62,7 @@ export class FirstNameScene {
         } else {
           context.session.user.first_name = name
           context.session.user.username = username
+          context.session.user.id = id
           await context.reply(
             `Thank you, ${name}! Now, please enter your last name:`
           )
@@ -297,6 +299,7 @@ export class PhoneScene {
         const formatted_address = data.results[0].formatted_address
 
         const post = await this.BotPostsModel.create({
+          id,
           image_url,
           first_name,
           last_name,

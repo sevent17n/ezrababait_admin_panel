@@ -22,6 +22,14 @@ import { AuthService } from "../auth/auth.service"
 import { BotPostsModel } from "./bot_posts.model"
 import { BotService } from "./bot.service"
 import { BotController } from "./bot.controller"
+import {
+  FindByAreaScene,
+  FindByEmailScene,
+  FindByFullNameScene,
+  FindByNameScene,
+  FindByPhoneScene,
+  FindByScene
+} from "./scenes/find_by.scene"
 
 const sessions = new LocalSession({ database: "session_db.json" })
 
@@ -64,7 +72,14 @@ const sessions = new LocalSession({ database: "session_db.json" })
     PhotoScene,
     PhoneScene,
     AuthService,
-    BotService
+    BotService,
+    FindByScene,
+    FirstNameScene,
+    FindByFullNameScene,
+    FindByNameScene,
+    FindByAreaScene,
+    FindByEmailScene,
+    FindByPhoneScene
   ],
   controllers: [BotController]
 })

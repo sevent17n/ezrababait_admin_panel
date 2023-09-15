@@ -10,4 +10,11 @@ export class BotService {
   async getRequests() {
     return this.BotQueueModel.find()
   }
+  async findByQuery(query: Partial<BotPostsModel>): Promise<BotPostsModel[]> {
+    try {
+      return await this.BotQueueModel.find(query).exec()
+    } catch (error) {
+      throw error
+    }
+  }
 }

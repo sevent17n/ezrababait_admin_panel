@@ -1,5 +1,6 @@
 import { Markup } from "telegraf"
 import { createHash } from "./bot_utils"
+import { BotPostsModel } from "./bot_posts.model"
 
 export const registrationButton = () =>
   Markup.inlineKeyboard([
@@ -43,3 +44,23 @@ export const SexButton = () =>
     Markup.button.callback("Male", "male"),
     Markup.button.callback("Female", "female")
   ])
+
+export const UsersKeyboard = (users: BotPostsModel[]) => {
+  const chunkSize = 3
+  const userChunks = []
+  for (let i = 0; i < users.length; i += chunkSize) {
+    userChunks.push(users.slice(i, i + chunkSize))
+  }
+
+  const keyboardButtons = userChunks.map((chunk) =>
+    chunk.map((user) =>
+      Markup.button.callback(user.first_name, `user_${user.id}`)
+    )
+  )
+
+  const customKeyboard = []
+  keyboardButtons.forEach((row) => {
+    customKeyboard.push([...row])
+  })
+  return customKeyboard
+}
