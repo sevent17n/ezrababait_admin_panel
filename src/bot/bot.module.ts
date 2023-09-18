@@ -30,6 +30,7 @@ import {
   FindByPhoneScene,
   FindByScene
 } from "./scenes/find_by.scene"
+import { BOT_TOKEN } from "./bot.constants"
 
 const sessions = new LocalSession({ database: "session_db.json" })
 
@@ -37,7 +38,7 @@ const sessions = new LocalSession({ database: "session_db.json" })
   imports: [
     TelegrafModule.forRoot({
       middlewares: [sessions.middleware()],
-      token: "6305243242:AAHO6JxSBeqBkrHDtz5UHsRq7hBl2W4hMQk"
+      token: BOT_TOKEN
     }),
     TypegooseModule.forFeature([
       {
