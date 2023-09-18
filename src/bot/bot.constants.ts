@@ -13,3 +13,5 @@ export const ADDRESS_SCENE = "ADDRESS_SCENE"
 export const SEX_SCENE = "SEX_SCENE"
 export const AGE_SCENE = "AGE_SCENE"
 export const PHOTO_SCENE = "PHOTO_SCENE"
+
+export const BOT_TOKEN = process.env.BOT_TOKEN
