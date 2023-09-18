@@ -30,10 +30,9 @@ import {
   FindByPhoneScene,
   FindByScene
 } from "./scenes/find_by.scene"
-import { BOT_TOKEN } from "./bot.constants"
 
 const sessions = new LocalSession({ database: "session_db.json" })
-
+const { BOT_TOKEN } = process.env
 @Module({
   imports: [
     TelegrafModule.forRoot({
