@@ -1,6 +1,5 @@
 import { Module } from "@nestjs/common"
 import { TelegrafModule } from "nestjs-telegraf"
-import * as LocalSession from "telegraf-session-local"
 import { BotUpdate } from "./bot.update"
 import {
   EmailScene,
@@ -30,14 +29,12 @@ import {
   FindByPhoneScene,
   FindByScene
 } from "./scenes/find_by.scene"
+import { getTgConfig } from "../config/tg.config"
 
-const sessions = new LocalSession({ database: "session_db.json" })
-const { BOT_TOKEN } = process.env
 @Module({
   imports: [
-    TelegrafModule.forRoot({
-      middlewares: [sessions.middleware()],
-      token: BOT_TOKEN
+    TelegrafModule.forRootAsync({
+      useFactory: getTgConfig
     }),
     TypegooseModule.forFeature([
       {

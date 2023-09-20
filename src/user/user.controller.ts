@@ -12,8 +12,8 @@ import {
 } from "@nestjs/common"
 import { UserService } from "./user.service"
 import { Auth } from "../auth/decorators/auth.decorator"
-import { TypeRole } from "../auth/auth.interface"
 import { Request } from "express"
+import { ChangeRoleDto } from "./dto/changeRole.dto"
 
 @Controller("users")
 export class UserController {
@@ -43,17 +43,14 @@ export class UserController {
   async deleteUserById(@Query("id") id: number) {
     return this.UserService.deleteUserById(id)
   }
-  @Auth("super_admin")
+  @Auth("admin")
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
-  @Post()
-  async changeRole(
-    @Body("role") role: TypeRole,
-    @Body("id") id: number,
-    @Req() request: Request
-  ) {
-    return this.UserService.changeRole(role, id, request)
+  @Post("change_role")
+  async changeRole(@Body() dto: ChangeRoleDto, @Req() request: Request) {
+    return this.UserService.changeRole(dto, request)
   }
+
   @Auth("admin")
   @UsePipes(new ValidationPipe())
   @HttpCode(200)

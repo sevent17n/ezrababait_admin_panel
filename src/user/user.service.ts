@@ -1,9 +1,9 @@
-import { BadRequestException, Inject, Injectable } from "@nestjs/common"
+import { BadRequestException, Injectable } from "@nestjs/common"
 import { InjectModel } from "nestjs-typegoose"
 import { UserModel } from "./user.model"
 import { ModelType } from "@typegoose/typegoose/lib/types"
-import { TypeRole } from "../auth/auth.interface"
 import { Request } from "express"
+import { ChangeRoleDto } from "./dto/changeRole.dto"
 
 @Injectable()
 export class UserService {
@@ -34,22 +34,25 @@ export class UserService {
     if (!user) throw new BadRequestException(`User with id: ${id} not found`)
     return user
   }
-  async changeRole(role: TypeRole, id: number, request: Request) {
-    if (role === "pending")
+  async changeRole(dto: ChangeRoleDto, request: Request) {
+    if (dto.role === "pending")
       throw new BadRequestException("Role can not be pending")
 
     const authenticatedUser = request.user as UserModel
     const UserRole = authenticatedUser.isAdmin
 
-    if (UserRole !== "admin" && role === "super_admin")
+    if (UserRole === "admin" && dto.role !== "housekeeper")
       throw new BadRequestException("You have no rights")
 
     const user = await this.UserModel.findOneAndUpdate(
-      { id: id },
-      { isAdmin: role }
+      { username: dto.username },
+      { isAdmin: dto.role }
     ).exec()
 
-    if (!user) throw new BadRequestException(`User with id: ${id} not found`)
+    if (!user)
+      throw new BadRequestException(
+        `User with username: ${dto.username} not found`
+      )
     return user
   }
   async getPendingUsers(page: number = 1, perPage: number = 20) {
