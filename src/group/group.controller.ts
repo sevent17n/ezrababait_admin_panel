@@ -12,17 +12,17 @@ import {
 import { GroupService } from "./group.service"
 import { Auth } from "../auth/decorators/auth.decorator"
 
-@Controller("groups")
+@Controller("group")
 export class GroupController {
   constructor(private readonly GroupService: GroupService) {}
-  @Auth("admin")
+  @Auth("super_admin")
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
   @Get("find_group_by_name")
   async findGroupByName(@Query("name") name: string) {
     return this.GroupService.findGroupByName(name)
   }
-  @Auth("admin")
+  @Auth("super_admin")
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
   @Get()
@@ -36,15 +36,18 @@ export class GroupController {
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
   @Get("get_group_by_id")
-  async getGroupById(@Query("id") id: number) {
-    return this.GroupService.getGroupById(id)
+  async getGroupById(@Query("_id") _id: string) {
+    return this.GroupService.getGroupById(_id)
   }
-  @Auth("admin")
+  @Auth("super_admin")
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
   @Post("create_group")
-  async createGroup(@Query("name") name: string) {
-    return this.GroupService.createGroup(name)
+  async createGroup(
+    @Query("name") name: string,
+    @Query("image_url") image_url: string
+  ) {
+    return this.GroupService.createGroup(name, image_url)
   }
   @Auth("super_admin")
   @UsePipes(new ValidationPipe())
@@ -58,19 +61,19 @@ export class GroupController {
   @HttpCode(200)
   @Post("add_admin_to_group")
   async addAdminToGroup(
-    @Body("adminId") adminId: number,
-    @Body("groupId") groupId: number
+    @Query("username") username: string,
+    @Query("groupId") groupId: string
   ) {
-    return this.GroupService.addAdminToGroup(adminId, groupId)
+    return this.GroupService.addAdminToGroup(username, groupId)
   }
   @Auth("admin")
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
   @Post("add_user_to_group")
   async addUserToGroup(
-    @Body("userId") userId: number,
-    @Body("groupId") groupId: number
+    @Query("username") username: string,
+    @Query("groupId") groupId: string
   ) {
-    return this.GroupService.addUserToGroup(userId, groupId)
+    return this.GroupService.addUserToGroup(username, groupId)
   }
 }

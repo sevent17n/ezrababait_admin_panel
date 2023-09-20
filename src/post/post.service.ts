@@ -3,12 +3,17 @@ import { InjectModel } from "nestjs-typegoose"
 import { ModelType } from "@typegoose/typegoose/lib/types"
 import { PostModel } from "./post.model"
 import { PostDto } from "./dto/post.dto"
+import Fuse from "fuse.js"
+import { BotPostsModel } from "../bot/bot_posts.model"
 
 @Injectable()
 export class PostService {
   constructor(
-    @InjectModel(PostModel) private readonly PostModel: ModelType<PostModel>
+    @InjectModel(PostModel) private readonly PostModel: ModelType<PostModel>,
+    @InjectModel(BotPostsModel)
+    private readonly BotPosts: ModelType<BotPostsModel>
   ) {}
+
   async createPost(dto: PostDto) {
     try {
       const post = await this.PostModel.create(dto)
@@ -58,11 +63,30 @@ export class PostService {
     return post
   }
 
-  async getPosts(query: "rejected" | "accepted" | undefined) {
-    if (query === undefined) {
-      return await this.PostModel.find().exec()
+  async getPosts(query: string) {
+    if (query) {
+      const posts = await this.BotPosts.find().exec()
+      const fuse = new Fuse(posts, {
+        keys: [
+          "image_url",
+          "first_name",
+          "last_name",
+          "email",
+          "phone",
+          "address",
+          "username",
+          "sex",
+          "coordinates.lat",
+          "coordinates.lng"
+        ],
+        includeScore: true,
+        threshold: 0.4,
+        minMatchCharLength: 1
+      })
+      console.log(posts)
+      return fuse.search(query)
     } else {
-      return await this.PostModel.find({ status: query }).exec()
+      return this.BotPosts.find().exec()
     }
   }
 }

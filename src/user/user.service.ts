@@ -29,6 +29,18 @@ export class UserService {
       throw new Error("Internal Server Error")
     }
   }
+  async getAdmins(page: number = 1, perPage: number = 20) {
+    try {
+      const skipAmount = (page - 1) * perPage
+      return await this.UserModel.find({ isAdmin: "admin" })
+        .skip(skipAmount)
+        .limit(perPage)
+        .lean()
+        .exec()
+    } catch (e) {
+      throw new Error("Internal Server Error")
+    }
+  }
   async deleteUserById(id: number) {
     const user = await this.UserModel.findOneAndDelete({ id: id }).exec()
     if (!user) throw new BadRequestException(`User with id: ${id} not found`)

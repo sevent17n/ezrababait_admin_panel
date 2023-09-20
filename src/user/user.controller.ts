@@ -39,6 +39,16 @@ export class UserController {
   @Auth("super_admin")
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
+  @Get("get_admins")
+  async getAdmins(
+    @Query("page") page: number,
+    @Query("perPage") perPage: number
+  ) {
+    return this.UserService.getAdmins(page, perPage)
+  }
+  @Auth("super_admin")
+  @UsePipes(new ValidationPipe())
+  @HttpCode(200)
   @Delete()
   async deleteUserById(@Query("id") id: number) {
     return this.UserService.deleteUserById(id)

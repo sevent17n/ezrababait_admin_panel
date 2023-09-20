@@ -4,6 +4,7 @@ import { ConfigModule } from "@nestjs/config"
 import { PostModel } from "./post.model"
 import { PostService } from "./post.service"
 import { PostController } from "./post.controller"
+import { BotPostsModel } from "../bot/bot_posts.model"
 
 @Module({
   imports: [
@@ -12,6 +13,12 @@ import { PostController } from "./post.controller"
         typegooseClass: PostModel,
         schemaOptions: {
           collection: "Post"
+        }
+      },
+      {
+        typegooseClass: BotPostsModel,
+        schemaOptions: {
+          collection: "BotPost"
         }
       }
     ]),

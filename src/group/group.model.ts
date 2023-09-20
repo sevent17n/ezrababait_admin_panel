@@ -4,12 +4,12 @@ import { UserModel } from "../user/user.model"
 
 @modelOptions({ options: { allowMixed: Severity.ALLOW } })
 export class GroupModel extends TimeStamps {
-  @prop()
-  id: mongoose.Types.ObjectId
-  @prop({ unique: true, default: "" })
+  @prop({ default: "" })
   name: string
-  @prop({ default: {} })
-  admin: UserModel
+  @prop({ default: "/uploads/groups/default.webp" })
+  image_url: string
+  @prop({ default: null })
+  admin: UserModel | null
   @prop({ default: [] })
   members: Array<UserModel>
 }

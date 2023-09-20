@@ -3,6 +3,7 @@ import { modelOptions, prop, Severity } from "@typegoose/typegoose"
 import { TypeRole } from "../auth/auth.interface"
 import { PostModel } from "../post/post.model"
 import { ChatModel } from "../chat/chat.model"
+import { ObjectId } from "mongoose"
 
 @modelOptions({ options: { allowMixed: Severity.ALLOW } })
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
@@ -24,5 +25,5 @@ export class UserModel extends TimeStamps {
   @prop()
   chats: ChatModel[]
   @prop()
-  groupId: number
+  groupId: string
 }

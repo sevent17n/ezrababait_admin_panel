@@ -26,14 +26,15 @@ export class GroupService {
       throw new Error("Internal Server Error")
     }
   }
-  async getGroupById(id: number) {
-    const group = await this.GroupModel.findOne({ id: id }).exec()
-    if (!group) throw new BadRequestException(`Group width id: ${id} not found`)
+  async getGroupById(_id: string) {
+    const group = await this.GroupModel.findOne({ _id: _id }).exec()
+    if (!group)
+      throw new BadRequestException(`Group width id: ${_id} not found`)
     return group
   }
-  async createGroup(name: string) {
+  async createGroup(name: string, image_url: string) {
     try {
-      return await this.GroupModel.create({ name: name })
+      return await this.GroupModel.create({ name, image_url })
     } catch (e) {
       console.log(e)
       throw new Error("Internal Server Error")
@@ -44,31 +45,31 @@ export class GroupService {
     if (!group) throw new BadRequestException(`Group width id: ${id} not found`)
     return group
   }
-  async addAdminToGroup(adminId: number, groupId: number) {
-    const admin = await this.UserModel.findOne({ id: adminId }).exec()
+  async addAdminToGroup(username: string, groupId: string) {
+    const admin = await this.UserModel.findOne({ username: username }).exec()
     if (!admin)
-      throw new BadRequestException(`Admin with id ${adminId} not found`)
-    const group = await this.GroupModel.findOne({ id: groupId }).exec()
+      throw new BadRequestException(`Admin with username ${username} not found`)
+    const group = await this.GroupModel.findOne({ _id: groupId }).exec()
     if (!group)
       throw new BadRequestException(`Admin with id ${groupId} not found`)
     if (group.admin) {
       throw new BadRequestException("It can not be more than one admin")
     }
     group.admin = admin
-    admin.groupId = group.id
+    admin.groupId = String(group._id)
     await group.save()
     await admin.save()
     return { group, admin }
   }
-  async addUserToGroup(userId: number, groupId: number) {
+  async addUserToGroup(username: string, groupId: string) {
     const group = await this.GroupModel.findById(groupId).exec()
     if (!group) {
       throw new BadRequestException(`Group with ID ${groupId} not found`)
     }
 
-    const user = await this.UserModel.findOne({ id: userId })
+    const user = await this.UserModel.findOne({ username })
     if (!user) {
-      throw new BadRequestException(`User with ID ${userId} not found`)
+      throw new BadRequestException(`User with ID ${username} not found`)
     }
     user.groupId = group.id
     await user.save()

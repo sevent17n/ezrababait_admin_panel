@@ -57,7 +57,7 @@ export class PostController {
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
   @Get("posts")
-  async getPosts(@Query("query") query: "rejected" | "accepted" | undefined) {
+  async getPosts(@Query("query") query: string) {
     return await this.PostService.getPosts(query)
   }
 }
