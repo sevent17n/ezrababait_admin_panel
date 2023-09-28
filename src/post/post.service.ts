@@ -89,4 +89,7 @@ export class PostService {
       return this.BotPosts.find().exec()
     }
   }
+  async getPost(id: number) {
+    return await this.BotPosts.findOne({ id }).exec()
+  }
 }

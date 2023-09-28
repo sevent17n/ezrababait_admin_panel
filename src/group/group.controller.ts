@@ -11,6 +11,7 @@ import {
 } from "@nestjs/common"
 import { GroupService } from "./group.service"
 import { Auth } from "../auth/decorators/auth.decorator"
+import { CreateGroupDto } from "./dto/create_group.dto"
 
 @Controller("group")
 export class GroupController {
@@ -43,11 +44,8 @@ export class GroupController {
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
   @Post("create_group")
-  async createGroup(
-    @Query("name") name: string,
-    @Query("image_url") image_url: string
-  ) {
-    return this.GroupService.createGroup(name, image_url)
+  async createGroup(@Body() dto: CreateGroupDto) {
+    return this.GroupService.createGroup(dto)
   }
   @Auth("super_admin")
   @UsePipes(new ValidationPipe())

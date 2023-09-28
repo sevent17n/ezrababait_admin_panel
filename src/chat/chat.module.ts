@@ -1,10 +1,13 @@
 import { Module } from "@nestjs/common"
 import { TypegooseModule } from "nestjs-typegoose"
-import { ConfigModule } from "@nestjs/config"
-import { ChatModel } from "./chat.model"
+import { ConfigModule, ConfigService } from "@nestjs/config"
+import { ChatModel, MessageModel } from "./chat.model"
 import { ChatService } from "./chat.service"
-import { ChatController } from "./chat.controller"
+import { ChatGateway } from "./chat.gateway"
 import { UserModel } from "../user/user.model"
+import { JwtModule } from "@nestjs/jwt"
+import { getJWTConfig } from "../config/jwt.config"
+import { JwtStrategy } from "../auth/strategies/jwt.strategy"
 
 @Module({
   imports: [
@@ -20,11 +23,21 @@ import { UserModel } from "../user/user.model"
         schemaOptions: {
           collection: "User"
         }
+      },
+      {
+        typegooseClass: MessageModel,
+        schemaOptions: {
+          collection: "Messages"
+        }
       }
     ]),
-    ConfigModule
+    ConfigModule,
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: getJWTConfig
+    })
   ],
-  providers: [ChatService],
-  controllers: [ChatController]
+  providers: [ChatService, ChatGateway, JwtStrategy]
 })
 export class ChatModule {}

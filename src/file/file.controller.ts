@@ -9,11 +9,13 @@ import {
 import { FileService } from "./file.service"
 import { FileInterceptor } from "@nestjs/platform-express"
 import { Express } from "express"
+import { Auth } from "../auth/decorators/auth.decorator"
 
 @Controller("file")
 export class FileController {
   constructor(private readonly fileService: FileService) {}
 
+  @Auth()
   @Post()
   @HttpCode(200)
   @UseInterceptors(FileInterceptor("file"))

@@ -1,0 +1,43 @@
+{
+  "sessions": [
+    {
+      "id": "2129651431:2129651431",
+      "data": {
+        "__scenes": {
+          "current": "FIND_BY_SCENE",
+          "state": {}
+        },
+        "user": {
+          "first_name": "sadsad",
+          "username": "k8s_ops",
+          "id": 2129651431,
+          "last_name": "mskadk",
+          "email": "ksdksjk@aksdjkjsa.aslkd",
+          "sex": "male",
+          "age": 12,
+          "image_url": "https://api.telegram.org/file/bot6305243242:AAHO6JxSBeqBkrHDtz5UHsRq7hBl2W4hMQk/photos/file_13.jpg",
+          "address": {
+            "lat": 59.959263,
+            "lng": 30.423151
+          },
+          "phone": "+7 911 744 42 80"
+        }
+      }
+    },
+    {
+      "id": "894780890:894780890",
+      "data": {
+        "__scenes": {
+          "current": "FIND_BY_EMAIL",
+          "state": {}
+        }
+      }
+    },
+    {
+      "id": "-1001789635768:6305243242",
+      "data": {
+        "__scenes": {}
+      }
+    }
+  ]
+}

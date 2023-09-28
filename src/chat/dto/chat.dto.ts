@@ -1,5 +1,6 @@
-import { IsDate, IsNumber, IsObject } from "class-validator"
+import { IsDate, IsNumber, IsObject, ValidateNested } from "class-validator"
 import { ContentType } from "../chat.model"
+import { Type } from "class-transformer"
 
 export class ChatDto {
   @IsDate()
@@ -10,4 +11,17 @@ export class ChatDto {
   chatId: number
   @IsObject()
   content: ContentType
+}
+
+export class CreateMessageDto {
+  @IsObject()
+  @ValidateNested()
+  @Type(() => ContentType)
+  content: ContentType
+  @IsNumber()
+  senderId: number
+  @IsNumber()
+  chatId: string
+  @IsDate()
+  date: Date
 }

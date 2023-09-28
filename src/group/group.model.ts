@@ -1,6 +1,7 @@
 import { modelOptions, mongoose, prop, Severity } from "@typegoose/typegoose"
 import { TimeStamps } from "@typegoose/typegoose/lib/defaultClasses"
 import { UserModel } from "../user/user.model"
+import { BotPostsModel } from "../bot/bot_posts.model"
 
 @modelOptions({ options: { allowMixed: Severity.ALLOW } })
 export class GroupModel extends TimeStamps {
@@ -11,5 +12,5 @@ export class GroupModel extends TimeStamps {
   @prop({ default: null })
   admin: UserModel | null
   @prop({ default: [] })
-  members: Array<UserModel>
+  members: Array<BotPostsModel>
 }

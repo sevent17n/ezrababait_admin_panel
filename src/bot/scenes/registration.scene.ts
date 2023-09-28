@@ -319,7 +319,7 @@ export class PhoneScene {
         await post.save()
 
         await axios.post(
-          "https://api.telegram.org/bot6305243242:AAHO6JxSBeqBkrHDtz5UHsRq7hBl2W4hMQk/createForumTopic",
+          `https://api.telegram.org/bot${process.env.BOT_TOKEN}/createForumTopic`,
           {
             chat_id: CHAT_ID,
             name: first_name

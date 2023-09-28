@@ -5,6 +5,7 @@ import { GroupModel } from "./group.model"
 import { ConfigModule } from "@nestjs/config"
 import { GroupService } from "./group.service"
 import { GroupController } from "./group.controller"
+import { BotPostsModel } from "../bot/bot_posts.model"
 
 @Module({
   imports: [
@@ -19,6 +20,12 @@ import { GroupController } from "./group.controller"
         typegooseClass: GroupModel,
         schemaOptions: {
           collection: "Group"
+        }
+      },
+      {
+        typegooseClass: BotPostsModel,
+        schemaOptions: {
+          collection: "BotPost"
         }
       }
     ]),

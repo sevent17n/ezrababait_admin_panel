@@ -23,7 +23,7 @@ export class UserModel extends TimeStamps {
   @prop()
   posts: PostModel[]
   @prop()
-  chats: ChatModel[]
+  chats: Array<string>
   @prop()
   groupId: string
 }

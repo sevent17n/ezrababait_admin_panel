@@ -60,4 +60,11 @@ export class PostController {
   async getPosts(@Query("query") query: string) {
     return await this.PostService.getPosts(query)
   }
+  @Auth("admin")
+  @UsePipes(new ValidationPipe())
+  @HttpCode(200)
+  @Get("posts_by_id")
+  async getPostsById(@Query("id") id: number) {
+    return await this.PostService.getPost(id)
+  }
 }

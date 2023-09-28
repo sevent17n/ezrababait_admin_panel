@@ -3,12 +3,17 @@ import { InjectModel } from "nestjs-typegoose"
 import { ModelType } from "@typegoose/typegoose/lib/types"
 import { UserModel } from "../user/user.model"
 import { GroupModel } from "./group.model"
+import axios from "axios"
+import { CreateGroupDto } from "./dto/create_group.dto"
+import { BotPostsModel } from "../bot/bot_posts.model"
 
 @Injectable()
 export class GroupService {
   constructor(
     @InjectModel(UserModel) private readonly UserModel: ModelType<UserModel>,
-    @InjectModel(GroupModel) private readonly GroupModel: ModelType<GroupModel>
+    @InjectModel(GroupModel) private readonly GroupModel: ModelType<GroupModel>,
+    @InjectModel(BotPostsModel)
+    private readonly BotPosts: ModelType<BotPostsModel>
   ) {}
   async findGroupByName(name: string) {
     return await this.GroupModel.find({ name: name }).exec()
@@ -28,13 +33,30 @@ export class GroupService {
   }
   async getGroupById(_id: string) {
     const group = await this.GroupModel.findOne({ _id: _id }).exec()
+
     if (!group)
       throw new BadRequestException(`Group width id: ${_id} not found`)
     return group
   }
-  async createGroup(name: string, image_url: string) {
+  async createGroup(dto: CreateGroupDto) {
     try {
-      return await this.GroupModel.create({ name, image_url })
+      const users = await this.BotPosts.find({
+        id: { $in: dto.idArray }
+      })
+
+      // const { data } = await axios.post(
+      //   `https://api.telegram.org/bot${process.env.BOT_TOKEN}/method/messages.createChat`,
+      //   {
+      //     users: dto.idArray,
+      //     title: dto.name
+      //   }
+      // )
+      // console.log(data)
+      return await this.GroupModel.create({
+        name: dto.name,
+        image_url: dto.image_url,
+        members: users
+      })
     } catch (e) {
       console.log(e)
       throw new Error("Internal Server Error")
@@ -73,7 +95,7 @@ export class GroupService {
     }
     user.groupId = group.id
     await user.save()
-    group.members.push(user)
+    // group.members.push(user)
     await group.save()
     return group
   }
