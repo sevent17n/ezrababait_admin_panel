@@ -27,5 +27,5 @@ jobs:
             sudo docker stop ${{ secrets.DOCKER_REPO_NAME }} || true
             sudo docker rm ${{ secrets.DOCKER_REPO_NAME }} || true
             sudo docker build -t ${{ secrets.DOCKER_REPO_NAME }} .
-# sudo docker run -d --name ${{ secrets.DOCKER_REPO_NAME }} --network proxy-network -p 5000:5000 ${{ secrets.DOCKER_REPO_NAME }}
+            sudo docker run -d --name ${{ secrets.DOCKER_REPO_NAME }} --network mongo-network -p 5000:5000 ${{ secrets.DOCKER_REPO_NAME }}
       
