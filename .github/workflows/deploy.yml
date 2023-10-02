@@ -17,8 +17,6 @@ jobs:
             sudo rm -rf admin_panel_server
             sudo gh repo clone Monitozation/admin_panel_server
             cd admin_panel_server
-            sudo docker stop ${{ secrets.DOCKER_REPO_NAME }} || true
-            sudo docker rm ${{ secrets.DOCKER_REPO_NAME }} || true
             touch .env
             echo "WEB_APP_URL=${{ secrets.WEB_APP_URL }}" >> .env
             echo "GOOGLE_GECOCODING_TOKEN=${{ secrets.GOOGLE_GECOCODING_TOKEN }}" >> .env
@@ -27,5 +25,7 @@ jobs:
             echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> .env
             echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
             sudo docker build -t ${{ secrets.DOCKER_REPO_NAME }} .
+            sudo docker stop ${{ secrets.DOCKER_REPO_NAME }} || true
+            sudo docker rm ${{ secrets.DOCKER_REPO_NAME }} || true
 # sudo docker run -d --name ${{ secrets.DOCKER_REPO_NAME }} --network proxy-network -p 5000:5000 ${{ secrets.DOCKER_REPO_NAME }}
       
