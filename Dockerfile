@@ -8,9 +8,8 @@ ENV NODE_ENV=production
 
 RUN yarn
 
-
-RUN yarn  build
+RUN yarn build
 
 EXPOSE 8000
 
-CMD [ "yarn",  "start:prod" ]
+CMD [ "yarn", "start:prod" ]
