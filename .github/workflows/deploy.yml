@@ -14,9 +14,9 @@ jobs:
           username: ${{ secrets.HOST_USERNAME }}
           password: ${{ secrets.HOST_PASSWORD }}
           script: |
-            sudo rm -rf tg_web_app
-            sudo gh repo clone Monitozation/tg_web_app
-            sudo cd tg_web_app
+            sudo rm -rf admin_panel_server
+            sudo gh repo clone Monitozation/admin_panel_server
+            cd admin_panel_server
             sudo docker stop ${{ secrets.DOCKER_REPO_NAME }} || true
             sudo docker rm ${{ secrets.DOCKER_REPO_NAME }} || true
             touch .env
