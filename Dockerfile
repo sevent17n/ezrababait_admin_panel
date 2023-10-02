@@ -8,6 +8,8 @@ ENV NODE_ENV=production
 
 RUN yarn
 
+RUN yarn add @nestjs/cli
+
 RUN yarn build
 
 EXPOSE 8000
