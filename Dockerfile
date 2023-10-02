@@ -11,8 +11,6 @@ COPY . .
 
 RUN yarn build
 
-FROM node:alpine as production
-
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
 

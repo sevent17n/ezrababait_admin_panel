@@ -3,9 +3,9 @@ import { InjectModel } from "nestjs-typegoose"
 import { ModelType } from "@typegoose/typegoose/lib/types"
 import { UserModel } from "../user/user.model"
 import { GroupModel } from "./group.model"
-import axios from "axios"
 import { CreateGroupDto } from "./dto/create_group.dto"
 import { BotPostsModel } from "../bot/bot_posts.model"
+import Fuse from "fuse.js"
 
 @Injectable()
 export class GroupService {
@@ -16,7 +16,15 @@ export class GroupService {
     private readonly BotPosts: ModelType<BotPostsModel>
   ) {}
   async findGroupByName(name: string) {
-    return await this.GroupModel.find({ name: name }).exec()
+    const posts = await this.GroupModel.find().exec()
+    const fuse = new Fuse(posts, {
+      keys: ["name"],
+      includeScore: true,
+      threshold: 0.9,
+      minMatchCharLength: 3
+    })
+
+    return fuse.search(name)
   }
   async getGroups(page: number = 1, perPage: number = 20) {
     try {

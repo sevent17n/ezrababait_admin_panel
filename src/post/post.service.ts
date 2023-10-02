@@ -80,10 +80,10 @@ export class PostService {
           "coordinates.lng"
         ],
         includeScore: true,
-        threshold: 0.4,
-        minMatchCharLength: 1
+        threshold: 0.9,
+        minMatchCharLength: 3
       })
-      console.log(posts)
+      
       return fuse.search(query)
     } else {
       return this.BotPosts.find().exec()
