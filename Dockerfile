@@ -6,12 +6,11 @@ COPY . .
 
 ENV NODE_ENV=production
 
-RUN npm install --force
+RUN yarn
 
-RUN npm install -g @nestjs/cli
 
-RUN npm run build
+RUN yarn  build
 
 EXPOSE 8000
 
-CMD [ "npm", "run", "start:prod" ]
+CMD [ "yarn",  "start:prod" ]
