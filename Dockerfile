@@ -1,27 +1,17 @@
-FROM node:alpine AS development
+FROM node:lts
 
-WORKDIR /usr/src/app
-
-
-COPY package*.json ./
-
-RUN yarn install
+WORKDIR /app
 
 COPY . .
 
-RUN yarn build
+ENV NODE_ENV=production
 
-ARG NODE_ENV=production
-ENV NODE_ENV=${NODE_ENV}
+RUN npm ci --force
 
-WORKDIR /usr/src/app
+RUN npm install -g @nestjs/cli
 
-COPY package*.json ./
+RUN npm run build
 
-RUN yarn install
+EXPOSE 8000
 
-COPY . .
-
-COPY --from=development /usr/src/app/dist ./dist
-
-CMD ["node", "dist/main"]
+CMD [ "npm", "run", "start:prod" ]
